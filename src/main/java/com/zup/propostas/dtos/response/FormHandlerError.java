@@ -1,8 +1,5 @@
 package com.zup.propostas.dtos.response;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
 public class FormHandlerError {
 
     private int status;
@@ -15,7 +12,7 @@ public class FormHandlerError {
 
     @Deprecated
     public FormHandlerError(){}
-    
+
     public FormHandlerError(int status, String campo, String exception, String mensagem) {
         this.status = status;
         this.campo = campo;
