@@ -36,6 +36,8 @@ public class Proposta {
     @NotNull
     private BigDecimal salario;
 
+    @Enumerated(EnumType.STRING)
+    private EstadoProposta statusDaProposta;
 
 
     @Deprecated
@@ -52,4 +54,21 @@ public class Proposta {
     public Long getId() {
         return id;
     }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+
+
+    public void statusDaProposta(EstadoProposta statusDaProposta) {
+        this.statusDaProposta = statusDaProposta;
+    }
+
+
+
 }
