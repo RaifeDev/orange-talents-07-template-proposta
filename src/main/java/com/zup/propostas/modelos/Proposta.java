@@ -1,5 +1,6 @@
 package com.zup.propostas.modelos;
 
+import com.zup.propostas.dtos.response.CartaoResponse;
 import com.zup.propostas.validacoes.CpfCnpj;
 
 import javax.persistence.*;
@@ -39,6 +40,9 @@ public class Proposta {
     @Enumerated(EnumType.STRING)
     private EstadoProposta statusDaProposta;
 
+    @OneToOne(cascade = CascadeType.MERGE)
+    private Cartao cartao;
+
 
     @Deprecated
     public Proposta(){}
@@ -63,10 +67,16 @@ public class Proposta {
         return documento;
     }
 
-
+    public EstadoProposta getStatusDaProposta() {
+        return statusDaProposta;
+    }
 
     public void statusDaProposta(EstadoProposta statusDaProposta) {
         this.statusDaProposta = statusDaProposta;
+    }
+
+    public void associarCartao(Cartao cartao){
+        this.cartao = cartao;
     }
 
 
