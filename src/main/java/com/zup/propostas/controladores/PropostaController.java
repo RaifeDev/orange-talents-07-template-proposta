@@ -3,6 +3,7 @@ package com.zup.propostas.controladores;
 import com.zup.propostas.dtos.request.AnaliseCartaoRequest;
 import com.zup.propostas.dtos.request.PropostaRequest;
 import com.zup.propostas.dtos.response.AnaliseCartaoResponse;
+import com.zup.propostas.dtos.response.PropostaResponse;
 import com.zup.propostas.modelos.EstadoProposta;
 import com.zup.propostas.modelos.Proposta;
 import com.zup.propostas.repositorios.PropostaRepository;
@@ -11,10 +12,7 @@ import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -62,6 +60,22 @@ public class PropostaController {
         propostaRepository.save(proposta);
         return ResponseEntity.created(uri).build();
     }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PropostaResponse> buscarProposta(@PathVariable Long id){
+
+        Optional<Proposta> possivelProposta = propostaRepository.findById(id);
+
+        if(possivelProposta.isPresent()){
+            PropostaResponse propostaResponse = new PropostaResponse(possivelProposta.get());
+            return ResponseEntity.ok().body(propostaResponse);
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+
 
 
 

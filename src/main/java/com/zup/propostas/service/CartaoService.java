@@ -37,7 +37,7 @@ public class CartaoService {
 
         for(Proposta proposta : propostas){
 
-            if(proposta.getStatusDaProposta().equals(EstadoProposta.ELEGIVEL)){
+            if(proposta.getStatusDaProposta().equals(EstadoProposta.ELEGIVEL) && proposta.getCartao() == null){
                 logger.info("Iniciando associação de cartão...");
                 logger.info("Proposta de numero: " + proposta.getId() + " Iniciada." );
                 CartaoResponse possivelCartao = cartaoServiceAPI.buscarCartaoParaPropostaElegivel(proposta.getId().toString());

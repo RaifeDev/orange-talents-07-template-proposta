@@ -2,6 +2,7 @@ package com.zup.propostas.modelos;
 
 import com.zup.propostas.dtos.response.CartaoResponse;
 import com.zup.propostas.validacoes.CpfCnpj;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -69,6 +70,22 @@ public class Proposta {
 
     public EstadoProposta getStatusDaProposta() {
         return statusDaProposta;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+    public BigDecimal getSalario() {
+        return salario;
+    }
+
+    public Cartao getCartao() {
+        return cartao;
     }
 
     public void statusDaProposta(EstadoProposta statusDaProposta) {

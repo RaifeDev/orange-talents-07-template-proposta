@@ -38,4 +38,20 @@ public class Endereco {
         this.uf = endereco.getUf();
     }
 
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public String getUf() {
+        return uf;
+    }
 }
