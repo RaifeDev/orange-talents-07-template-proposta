@@ -2,8 +2,6 @@ package com.zup.propostas.dtos.response;
 
 import com.zup.propostas.modelos.Cartao;
 
-import java.math.BigDecimal;
-
 public class CartaoResponse {
 
     private String id;

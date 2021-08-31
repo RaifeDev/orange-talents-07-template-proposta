@@ -8,6 +8,21 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
       ZOOKEEPER_SYNC_LIMIT: 2
 
+  propostas-microservice:
+    image: 'raifepaiva/microservice'
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres-ms-propostas
+    environment:
+      PROFILE: dev
+      DB_HOST: postgres-ms-propostas
+      DB_PASSWORD: root
+      DB_NAME: bd_propostas
+      DB_USERNAME: root
+      DB_PORT: 5432
+
+
   kafka:
     image: "confluentinc/cp-kafka:5.2.1"
     ports:
@@ -33,6 +48,18 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: keycloak
       POSTGRES_HOST: postgres
+
+  postgres-ms-propostas:
+    image: 'postgres:9.6-alpine'
+    volumes:
+      - postgres-volume-propostas:/var/lib/postgresql/data
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: bd_propostas
+
 
   keycloak:
     image: jboss/keycloak:11.0.0
@@ -138,3 +165,4 @@ volumes:
   grafana-volume:
   prometheus-volume:
   postgres-volume:
+  postgres-volume-propostas:

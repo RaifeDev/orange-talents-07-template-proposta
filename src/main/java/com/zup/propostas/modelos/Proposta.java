@@ -1,8 +1,6 @@
 package com.zup.propostas.modelos;
 
-import com.zup.propostas.dtos.response.CartaoResponse;
 import com.zup.propostas.validacoes.CpfCnpj;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
