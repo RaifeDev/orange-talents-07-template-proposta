@@ -35,8 +35,15 @@ public class Cartao {
         this.statusCartao = StatusCartao.ATIVO;
     }
 
+    public StatusCartao getStatusCartao() {
+        return statusCartao;
+    }
 
+    public void bloquearCartao(){
+        this.statusCartao = StatusCartao.BLOQUEADO;
+    }
 
-
-
+    public String getNumeroCartao() {
+        return numeroCartao;
+    }
 }
