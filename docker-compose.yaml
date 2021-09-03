@@ -21,6 +21,8 @@ services:
       DB_NAME: bd_propostas
       DB_USERNAME: root
       DB_PORT: 5432
+      KEYCLOAK_ISSUER_URI: http://localhost:18080/auth/realms/AppPropostas
+      KEYCLOAK_JWKS_URI: http://localhost:18080/auth/realms/AppPropostas/protocol/openid-connect/certs
 
 
   kafka:
@@ -88,6 +90,7 @@ services:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: Pa55w0rd
       POSTGRES_PORT_5432_TCP_ADDR: 127.0.0.1
+      #KEYCLOAK_FRONTEND_URL: http://keycloak:8081/auth
     restart: on-failure
 
   analise:
@@ -139,7 +142,10 @@ services:
     image: prom/prometheus:v2.22.0
     volumes:
     #  - ./prometheus.yml:/etc/prometheus/prometheus.yml
+     - ./src/main/resources/prometheus.yml:/etc/prometheus/prometheus.yml
      - prometheus-volume:/etc/prometheus/
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
     ports:
       - "9090:9090"
 
@@ -166,3 +172,4 @@ volumes:
   prometheus-volume:
   postgres-volume:
   postgres-volume-propostas:
+

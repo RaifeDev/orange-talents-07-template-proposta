@@ -17,6 +17,8 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests(authorizeRequests ->
                 authorizeRequests
+                        .antMatchers(HttpMethod.GET, "/actuator/**")
+                            .permitAll()
                         .antMatchers(HttpMethod.GET, "/api/propostas/**")
                             .hasAnyAuthority("SCOPE_scope-propostas")
                         .antMatchers(HttpMethod.POST, "/api/propostas")
