@@ -19,6 +19,8 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
                 authorizeRequests
                         .antMatchers(HttpMethod.GET, "/actuator/**")
                             .permitAll()
+                        .antMatchers("/h2-console/**")
+                            .permitAll()
                         .antMatchers(HttpMethod.GET, "/api/propostas/**")
                             .hasAnyAuthority("SCOPE_scope-propostas")
                         .antMatchers(HttpMethod.POST, "/api/propostas")
@@ -27,6 +29,9 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
                             .hasAnyAuthority("SCOPE_scope-propostas")
                         .anyRequest().authenticated()
         ).oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+
+        http.headers().frameOptions().sameOrigin()
+                .and().csrf().disable();
 
     }
 
