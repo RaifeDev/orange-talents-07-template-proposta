@@ -3,6 +3,7 @@ package com.zup.propostas.servicosexternos;
 import com.zup.propostas.dtos.request.BloqueioCartaoRequest;
 import com.zup.propostas.dtos.request.OrdemAvisoViagemRequest;
 import com.zup.propostas.dtos.request.OrdemBloqueioRequest;
+import com.zup.propostas.dtos.request.OrdemCarteiraRequest;
 import com.zup.propostas.dtos.response.CartaoResponse;
 import com.zup.propostas.dtos.response.OrdemAvisoViagemResponse;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -21,6 +22,9 @@ public interface CartaoServiceAPI {
     @PostMapping("{id}/avisos")
     OrdemAvisoViagemResponse ordemParaAvisoViagem(@PathVariable("id") String numeroCartao,
                                                   @RequestBody OrdemAvisoViagemRequest ordemAvisoViagemRequest);
+
+    @PostMapping("{id}/carteiras")
+    OrdemAvisoViagemResponse associaCarteira(@PathVariable String id, @RequestBody OrdemCarteiraRequest ordemCarteiraRequest);
 
 
 }

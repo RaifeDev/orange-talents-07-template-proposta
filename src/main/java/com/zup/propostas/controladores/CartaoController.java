@@ -1,15 +1,11 @@
 package com.zup.propostas.controladores;
 
-import com.zup.propostas.dtos.request.AvisoViagemRequest;
-import com.zup.propostas.dtos.request.OrdemAvisoViagemRequest;
-import com.zup.propostas.dtos.request.OrdemBloqueioRequest;
-import com.zup.propostas.modelos.AvisoViagem;
-import com.zup.propostas.modelos.BloqueioCartao;
-import com.zup.propostas.modelos.Cartao;
-import com.zup.propostas.modelos.StatusCartao;
+import com.zup.propostas.dtos.request.*;
+import com.zup.propostas.modelos.*;
 import com.zup.propostas.repositorios.AvisoViagemRepository;
 import com.zup.propostas.repositorios.BloqueioCartaoRepository;
 import com.zup.propostas.repositorios.CartaoRepository;
+import com.zup.propostas.repositorios.CarteiraRepository;
 import com.zup.propostas.servicosexternos.CartaoServiceAPI;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +14,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.net.URI;
+import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 @RestController
 @RequestMapping("/api/cartoes")
@@ -32,12 +33,17 @@ public class CartaoController {
 
     private final AvisoViagemRepository avisoViagemRepository;
 
+    private final CarteiraRepository carteiraRepository;
+
     @Autowired
-    public CartaoController(CartaoRepository cartaoRepository, BloqueioCartaoRepository bloqueioCartaoRepository, CartaoServiceAPI cartaoServiceAPI, AvisoViagemRepository avisoViagemRepository) {
+    public CartaoController(CartaoRepository cartaoRepository, BloqueioCartaoRepository bloqueioCartaoRepository,
+                            CartaoServiceAPI cartaoServiceAPI, AvisoViagemRepository avisoViagemRepository,
+                            CarteiraRepository carteiraRepository) {
         this.cartaoRepository = cartaoRepository;
         this.bloqueioCartaoRepository = bloqueioCartaoRepository;
         this.cartaoServiceAPI = cartaoServiceAPI;
         this.avisoViagemRepository = avisoViagemRepository;
+        this.carteiraRepository = carteiraRepository;
     }
 
 
@@ -116,6 +122,39 @@ public class CartaoController {
         avisoViagemRepository.save(avisoViagem);
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("{idCartao}/carteiras")
+    public ResponseEntity<?> associarCarteira(@PathVariable Long idCartao, @RequestBody @Valid CarteiraRequest carteiraRequest){
+
+        Optional<Cartao> possivelCartao = cartaoRepository.findById(idCartao);
+
+        if(possivelCartao.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        Cartao cartao = possivelCartao.get();
+        List<Carteira> carteiraAssociada = carteiraRepository.findByStatusAndCartaoNumeroCartao(StatusCarteira.ATIVO, cartao.getNumeroCartao());
+
+        for(Carteira carteiraEncontrada: carteiraAssociada){
+            if(carteiraEncontrada.getTipoCarteira() == carteiraRequest.getTipoCarteira()){
+                return ResponseEntity.unprocessableEntity().build();
+            }
+        }
+
+        Carteira carteira = carteiraRequest.toModel(cartao);
+
+        try{
+            OrdemCarteiraRequest ordemCarteiraRequest = new OrdemCarteiraRequest(carteiraRequest.getEmail(), carteiraRequest.getTipoCarteira());
+            cartaoServiceAPI.associaCarteira(cartao.getNumeroCartao(), ordemCarteiraRequest);
+        }catch (FeignException e){
+            System.out.println("excecao: "+e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        carteiraRepository.save(carteira);
+        URI uri = fromCurrentRequest().path("/{id}").buildAndExpand(carteira.getId()).toUri();
+        return ResponseEntity.created(uri).build();
     }
 
 
