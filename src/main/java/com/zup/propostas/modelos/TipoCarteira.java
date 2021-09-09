@@ -2,7 +2,8 @@ package com.zup.propostas.modelos;
 
 public enum TipoCarteira {
 
-    PAYLPAL;
+    PAYLPAL,
+    SAMSUNG_PAY;
 
 
 }
