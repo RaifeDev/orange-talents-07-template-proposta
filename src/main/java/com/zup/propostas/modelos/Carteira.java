@@ -17,7 +17,7 @@ public class Carteira {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private StatusCarteira statusCarteira;
+    private StatusCarteira status;
 
     @ManyToOne
     @NotNull
@@ -29,16 +29,13 @@ public class Carteira {
 
     public Carteira(TipoCarteira tipoCarteira, Cartao cartao) {
         this.tipoCarteira = tipoCarteira;
-        this.statusCarteira = statusCarteira;
+        this.status = StatusCarteira.ATIVO;
+        this.cartao = cartao;
     }
 
 
     public TipoCarteira getTipoCarteira() {
         return tipoCarteira;
-    }
-
-    public StatusCarteira getStatusCarteira() {
-        return statusCarteira;
     }
 
     public Long getId() {

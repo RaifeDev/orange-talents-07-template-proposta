@@ -31,7 +31,7 @@ public class CartaoService {
 
 
     @Scheduled(fixedDelay = 60000)
-    private void associarCartao(){
+    public void associarCartao(){
 
         List<Proposta> propostas = propostaRepository.findAll();
 
