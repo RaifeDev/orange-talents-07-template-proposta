@@ -4,6 +4,7 @@ package com.zup.propostas.dtos.request;
 import com.zup.propostas.modelos.Endereco;
 import com.zup.propostas.modelos.Proposta;
 import com.zup.propostas.validacoes.CpfCnpj;
+import com.zup.propostas.validacoes.UniqueProposta;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -14,6 +15,8 @@ import java.math.BigDecimal;
 public class PropostaRequest {
 
     @NotBlank
+    @CpfCnpj
+    @UniqueProposta(domainClass = Proposta.class, fieldName = "documentoHash", message = "Solicitante já requisitou uma proposta")
     private String documento;
 
     @NotBlank
