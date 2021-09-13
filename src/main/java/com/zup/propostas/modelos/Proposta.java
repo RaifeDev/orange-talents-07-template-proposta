@@ -1,5 +1,6 @@
 package com.zup.propostas.modelos;
 
+import com.zup.propostas.utils.Criptografia;
 import com.zup.propostas.validacoes.CpfCnpj;
 
 import javax.persistence.*;
@@ -25,8 +26,9 @@ public class Proposta {
     private String nome;
 
     @NotBlank
-    @CpfCnpj
     private String documento;
+
+    private String documentoHash;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @NotNull
@@ -47,11 +49,12 @@ public class Proposta {
     public Proposta(){}
 
     public Proposta(String email, String nome, Endereco endereco, BigDecimal salario, String documento) {
+        this.documentoHash = Criptografia.getHashSHA512(documento);
         this.email = email;
         this.nome = nome;
         this.endereco = endereco;
         this.salario = salario;
-        this.documento = documento;
+        this.documento = criptografia(documento);
     }
 
     public Long getId() {
@@ -63,7 +66,8 @@ public class Proposta {
     }
 
     public String getDocumento() {
-        return documento;
+        Criptografia criptografia = new Criptografia();
+        return criptografia.decode(documento);
     }
 
     public EstadoProposta getStatusDaProposta() {
@@ -86,12 +90,23 @@ public class Proposta {
         return cartao;
     }
 
+    public String getDocumentoHash() {
+        return documentoHash;
+    }
+
     public void statusDaProposta(EstadoProposta statusDaProposta) {
         this.statusDaProposta = statusDaProposta;
     }
 
     public void associarCartao(Cartao cartao){
         this.cartao = cartao;
+    }
+
+
+
+    private String criptografia(String entrada){
+        Criptografia criptografia = new Criptografia();
+        return criptografia.encode(entrada);
     }
 
 

@@ -205,5 +205,6 @@
     <orderEntry type="library" name="Maven: io.opentracing.contrib:opentracing-spring-cloud-websocket-starter:0.5.3" level="project" />
     <orderEntry type="library" name="Maven: io.opentracing.contrib:opentracing-spring-cloud-zuul-starter:0.5.3" level="project" />
     <orderEntry type="library" name="Maven: io.opentracing.contrib:opentracing-spring-cloud-gateway-starter:0.5.3" level="project" />
+    <orderEntry type="library" name="Maven: org.jasypt:jasypt:1.9.3" level="project" />
   </component>
 </module>

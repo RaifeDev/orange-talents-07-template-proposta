@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 public class PropostaRequest {
 
     @NotBlank
-    @CpfCnpj
     private String documento;
 
     @NotBlank
